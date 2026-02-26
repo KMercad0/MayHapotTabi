@@ -1,7 +1,7 @@
 # MayHapotTabi — Project Planning Document
 
 > AI-powered PDF document assistant. Upload a PDF, chat with it.
-> **Status:** Phase 1 — Backend In Progress
+> **Status:** Phase 1 Complete — Backend RAG pipeline working end-to-end
 > **Last Updated:** 2026-02-26
 
 ---
