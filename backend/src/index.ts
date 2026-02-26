@@ -1,0 +1,24 @@
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import "./types/index";
+import uploadRouter from "./routes/upload";
+import chatRouter from "./routes/chat";
+import { verifyAuth } from "./middleware/auth";
+
+const app = express();
+const PORT = process.env.PORT ?? 3000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok", timestamp: new Date() });
+});
+
+app.use("/upload", verifyAuth, uploadRouter);
+app.use("/chat", chatRouter);
+
+app.listen(PORT, () => {
+  console.log(`MayHapotTabi backend running on port ${PORT}`);
+});
