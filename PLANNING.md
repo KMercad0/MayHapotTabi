@@ -166,7 +166,7 @@ create table document_chunks (
   document_id uuid references documents(id) on delete cascade not null,
   user_id     uuid references auth.users(id) on delete cascade not null,
   content     text not null,                    -- raw text of this chunk
-  embedding   vector(1536),                     -- embedding vector
+  embedding   vector(1024),                     -- embedding vector
   chunk_index integer not null,                 -- order within document
   created_at  timestamptz default now()
 );
