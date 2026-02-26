@@ -1,7 +1,8 @@
-// TODO: implement Anthropic claude-haiku-4-5 chat service
-export async function generateAnswer(
-  _question: string,
-  _context: string
-): Promise<string> {
-  throw new Error("Not implemented");
+import Anthropic from "@anthropic-ai/sdk";
+
+const apiKey = process.env.ANTHROPIC_API_KEY;
+if (!apiKey) {
+  throw new Error("Missing environment variable: ANTHROPIC_API_KEY");
 }
+
+export const anthropic = new Anthropic({ apiKey });

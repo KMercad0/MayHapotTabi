@@ -19,6 +19,13 @@ export interface ChunkRow {
   chunk_index: number;
 }
 
+export interface ChunkResult {
+  id: string;
+  content: string;
+  chunk_index: number;
+  similarity: number;
+}
+
 declare global {
   namespace Express {
     interface Request {

@@ -17,7 +17,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/upload", verifyAuth, uploadRouter);
-app.use("/chat", chatRouter);
+app.use("/chat", verifyAuth, chatRouter);
 
 app.listen(PORT, () => {
   console.log(`MayHapotTabi backend running on port ${PORT}`);

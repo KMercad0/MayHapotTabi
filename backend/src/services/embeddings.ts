@@ -52,3 +52,7 @@ export async function storeChunks(
     throw new Error(`Failed to store chunks: ${error.message}`);
   }
 }
+
+export async function embedQuery(text: string): Promise<number[]> {
+  return generateEmbedding(text);
+}
