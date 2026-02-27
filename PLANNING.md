@@ -444,7 +444,7 @@ CMD ["node", "dist/index.js"]
 - [ ] README with live demo URL + screenshots
 - [x] Error handling (upload fails, API errors, auth errors)
 - [ ] Loading states on all async actions
-- [ ] Mobile responsive
+- [x] Mobile responsive
 - [ ] n8n automation (stretch goal)
 
 ---
