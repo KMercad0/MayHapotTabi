@@ -56,9 +56,11 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
   // 5. Build prompt
   const context = chunks.map((c, i) => `[${i + 1}] ${c.content}`).join("\n\n");
+  const systemWithContext =
+    SYSTEM_MESSAGE + "\n\nDocument context for this query:\n" + context;
   const messages: Anthropic.MessageParam[] = [
     ...history,
-    { role: "user", content: `Context:\n${context}\n\nQuestion: ${message}` },
+    { role: "user", content: message },
   ];
 
   // 6. Commit to SSE — no JSON errors after this point
@@ -71,7 +73,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     const stream = anthropic.messages.stream({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 1024,
-      system: SYSTEM_MESSAGE,
+      system: systemWithContext,
       messages,
     });
 

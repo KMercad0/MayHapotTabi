@@ -45,5 +45,7 @@ frontend/src/
 
 ## Current Status
 - Phase 1 complete: backend RAG pipeline working end-to-end
-- Phase 2 in progress: frontend scaffold done, Login page next
-- Vector dimensions: 1024 (voyage-3)
+- Phase 2 complete: full frontend working end-to-end
+- Phase 3 in progress: Docker + deployment next
+- Vector dimensions: 1024 (voyage-3 model)
+- Supabase storage bucket: "uploads" (private)

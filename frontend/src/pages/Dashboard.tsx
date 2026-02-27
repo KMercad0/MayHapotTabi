@@ -14,15 +14,40 @@ export function Dashboard() {
   const fetchDocuments = useCallback(async () => {
     setLoading(true);
     setFetchError(null);
-    const { data, error } = await supabase
-      .from("documents")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (error) {
-      setFetchError(error.message);
-    } else {
-      setDocuments((data as Document[]) ?? []);
+
+    const [{ data: docsData, error: docsError }, { data: chatData }] =
+      await Promise.all([
+        supabase.from("documents").select("*").order("created_at", { ascending: false }),
+        supabase
+          .from("chat_messages")
+          .select("document_id, created_at")
+          .order("created_at", { ascending: false }),
+      ]);
+
+    if (docsError) {
+      setFetchError(docsError.message);
+      setLoading(false);
+      return;
     }
+
+    const docs = (docsData as Document[]) ?? [];
+
+    // Build map: document_id → latest chat timestamp (first hit is newest due to DESC order)
+    const latestChat = new Map<string, string>();
+    for (const row of chatData ?? []) {
+      if (!latestChat.has(row.document_id)) {
+        latestChat.set(row.document_id, row.created_at as string);
+      }
+    }
+
+    // Sort: recently chatted first, fall back to upload date
+    const sorted = [...docs].sort((a, b) => {
+      const aTime = latestChat.get(a.id) ?? a.created_at;
+      const bTime = latestChat.get(b.id) ?? b.created_at;
+      return bTime.localeCompare(aTime);
+    });
+
+    setDocuments(sorted);
     setLoading(false);
   }, []);
 

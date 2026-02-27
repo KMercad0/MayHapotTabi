@@ -428,9 +428,9 @@ CMD ["node", "dist/index.js"]
 - [x] Routing (App.tsx with protected routes)
 - [x] Login/Signup pages
 - [x] Dashboard with upload
-- [ ] Chat page with streaming UI
-- [ ] Auth tokens sent to backend correctly
-- [ ] End-to-end test: upload PDF → ask question → get answer
+- [x] Chat page with streaming UI
+- [x] Auth tokens sent to backend correctly
+- [x] End-to-end test: upload PDF → ask question → get answer
 
 ### Phase 3 — Docker + Deploy (Week 3)
 - [ ] Dockerfile written and tested locally
