@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import "./types/index";
-import uploadRouter from "./routes/upload";
+import uploadRouter, { deleteRouter } from "./routes/upload";
 import chatRouter from "./routes/chat";
 import { verifyAuth } from "./middleware/auth";
 
@@ -23,6 +23,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/upload", verifyAuth, uploadRouter);
 app.use("/chat", verifyAuth, chatRouter);
+app.use("/document", verifyAuth, deleteRouter);
 
 app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error("Unhandled error:", err.message);

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
+import api from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { UploadZone } from "@/components/document/UploadZone";
 import { DocumentList } from "@/components/document/DocumentList";
@@ -51,12 +53,21 @@ export function Dashboard() {
     setLoading(false);
   }, []);
 
+  const handleDelete = useCallback(async (documentId: string) => {
+    try {
+      await api.delete(`/document/${documentId}`);
+      setDocuments((prev) => prev.filter((d) => d.id !== documentId));
+    } catch {
+      toast.error("Failed to delete document");
+    }
+  }, []);
+
   useEffect(() => {
     void fetchDocuments();
   }, [fetchDocuments]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-4 md:p-6">
       <div className="flex justify-end mb-6">
         <button
           onClick={() => void signOut()}
@@ -66,7 +77,7 @@ export function Dashboard() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="flex flex-col">
           <UploadZone onUploadSuccess={fetchDocuments} />
         </div>
@@ -75,6 +86,7 @@ export function Dashboard() {
           loading={loading}
           error={fetchError}
           onRetry={fetchDocuments}
+          onDelete={handleDelete}
         />
       </div>
     </div>

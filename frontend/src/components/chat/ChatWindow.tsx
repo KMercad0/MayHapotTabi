@@ -48,7 +48,7 @@ export function ChatWindow({
         if (msg.role === "user") {
           return (
             <div key={i} className="flex justify-end">
-              <div className="bg-accent text-background rounded-md max-w-[75%] px-4 py-2 font-sans text-sm whitespace-pre-wrap break-words">
+              <div className="bg-accent text-background rounded-md max-w-[85%] sm:max-w-[75%] px-4 py-2 font-sans text-sm whitespace-pre-wrap break-words">
                 {msg.content}
               </div>
             </div>
@@ -80,7 +80,7 @@ export function ChatWindow({
 
         return (
           <div key={i} className="flex justify-start">
-            <div className="bg-surface border border-border rounded-md max-w-[75%] px-4 py-2 font-sans text-sm whitespace-pre-wrap break-words">
+            <div className="bg-surface border border-border rounded-md max-w-[85%] sm:max-w-[75%] px-4 py-2 font-sans text-sm whitespace-pre-wrap break-words">
               {msg.content}
             </div>
           </div>

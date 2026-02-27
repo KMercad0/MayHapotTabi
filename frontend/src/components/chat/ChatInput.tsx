@@ -45,7 +45,7 @@ export function ChatInput({ onSubmit, isStreaming }: ChatInputProps) {
       <div className="flex items-end gap-2">
         <textarea
           ref={textareaRef}
-          rows={1}
+          rows={2}
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}

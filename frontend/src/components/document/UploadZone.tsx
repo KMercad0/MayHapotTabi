@@ -117,7 +117,7 @@ export function UploadZone({ onUploadSuccess }: UploadZoneProps) {
     <div
       role="button"
       tabIndex={0}
-      className={`flex-1 flex flex-col items-center justify-center w-full min-h-48 border-2 border-dashed rounded-md transition-colors ${borderClass} ${bgClass} ${
+      className={`flex-1 flex flex-col items-center justify-center w-full min-h-[200px] border-2 border-dashed rounded-md transition-colors ${borderClass} ${bgClass} ${
         state === "uploading" ? "cursor-not-allowed" : "cursor-pointer"
       }`}
       onClick={onClick}

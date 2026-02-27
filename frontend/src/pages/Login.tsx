@@ -61,9 +61,9 @@ export function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <div className="w-full max-w-sm space-y-4">
+      <div className="w-full max-w-sm mx-4 sm:mx-auto space-y-4">
         <div className="text-center space-y-1">
-          <p className="font-mono text-sm font-medium">MayHapotTabi</p>
+          <p className="font-mono text-xl sm:text-2xl font-medium">MayHapotTabi</p>
           <p className="text-muted-foreground text-sm">
             {mode === "signin" ? "Sign in to your account" : "Create a new account"}
           </p>

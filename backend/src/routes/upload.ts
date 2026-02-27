@@ -118,4 +118,54 @@ router.post(
   }
 );
 
+export const deleteRouter = Router();
+
+deleteRouter.delete(
+  "/:documentId",
+  async (req: Request, res: Response): Promise<void> => {
+    const { documentId } = req.params;
+    const userId = req.user!.id;
+
+    // Verify document belongs to this user
+    const { data: doc } = await supabase
+      .from("documents")
+      .select("id, storage_path")
+      .eq("id", documentId)
+      .eq("user_id", userId)
+      .single();
+
+    if (!doc) {
+      res.status(404).json({ error: "Document not found" });
+      return;
+    }
+
+    try {
+      // 1. Delete all chunks
+      const { error: chunksError } = await supabase
+        .from("document_chunks")
+        .delete()
+        .eq("document_id", documentId);
+      if (chunksError) throw chunksError;
+
+      // 2. Delete file from storage
+      const { error: storageError } = await supabase.storage
+        .from("uploads")
+        .remove([doc.storage_path as string]);
+      if (storageError) throw storageError;
+
+      // 3. Delete document row
+      const { error: docError } = await supabase
+        .from("documents")
+        .delete()
+        .eq("id", documentId);
+      if (docError) throw docError;
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Delete document error:", err);
+      res.status(500).json({ error: "Failed to delete document" });
+    }
+  }
+);
+
 export default router;

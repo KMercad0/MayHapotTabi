@@ -165,12 +165,12 @@ export function Chat() {
       <div className="shrink-0 border-b border-border bg-background h-12 flex items-center px-4 gap-3">
         <button
           onClick={() => navigate("/dashboard")}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors min-w-[44px] min-h-[44px]"
         >
           <ArrowLeft size={16} />
-          Back
+          <span className="hidden sm:inline">Back</span>
         </button>
-        <span className="font-mono text-sm truncate flex-1">{docName}</span>
+        <span className="font-mono text-sm truncate flex-1 max-w-[150px] sm:max-w-[300px]">{docName}</span>
       </div>
 
       {/* Message list */}
