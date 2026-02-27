@@ -4,8 +4,11 @@
 > Ask anything. From any document.
 
 **Live demo → https://may-hapot-tabi.vercel.app**
+
 ![Dashboard](screenshots/mht2.png)
+
 ![Chat Box](screenshots/mht3.png)
+
 ---
 
 ## What it does
@@ -146,6 +149,9 @@ mayhapottabi/
 ---
 
 Built by [Karl Mercado](https://github.com/KMercad0)
+
 ![signin](screenshots/mht1.png)
+
 ![DarkMode](screenshots/mht4.png)
+
 ![Mobile View](screenshots/mht5.png)
