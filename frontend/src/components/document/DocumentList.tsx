@@ -7,6 +7,7 @@ interface DocumentListProps {
   documents: Document[];
   loading: boolean;
   error: string | null;
+  onRetry?: () => void;
 }
 
 function formatDate(dateStr: string): string {
@@ -17,7 +18,7 @@ function formatDate(dateStr: string): string {
   }).format(new Date(dateStr));
 }
 
-export function DocumentList({ documents, loading, error }: DocumentListProps) {
+export function DocumentList({ documents, loading, error, onRetry }: DocumentListProps) {
   const navigate = useNavigate();
 
   return (
@@ -35,7 +36,14 @@ export function DocumentList({ documents, loading, error }: DocumentListProps) {
       )}
 
       {!loading && error && (
-        <p className="text-sm text-muted-foreground">Failed to load documents</p>
+        <div className="flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">Failed to load documents</p>
+          {onRetry && (
+            <button onClick={onRetry} className="text-sm underline text-left w-fit">
+              Retry
+            </button>
+          )}
+        </div>
       )}
 
       {!loading && !error && documents.length === 0 && (

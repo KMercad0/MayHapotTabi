@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
 import { ChatWindow } from "@/components/chat/ChatWindow";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { parseSSEChunk } from "@/lib/stream";
@@ -11,6 +12,7 @@ import type { Message } from "@/types";
 export function Chat() {
   const { docId } = useParams<{ docId: string }>();
   const navigate = useNavigate();
+  const { signOut } = useAuth();
   const [docName, setDocName] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -62,7 +64,10 @@ export function Chat() {
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const token = sessionData.session?.access_token;
-      if (!token) throw new Error("Not authenticated");
+      if (!token) {
+        await signOut();
+        return;
+      }
 
       const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
       const response = await fetch(`${backendUrl}/chat`, {
@@ -75,7 +80,16 @@ export function Chat() {
       });
 
       if (!response.ok || !response.body) {
-        throw new Error(`Server error: ${response.status}`);
+        let errorMsg = "Failed to get a response. Please try again.";
+        try {
+          const errData = (await response.json()) as { error?: string };
+          if (errData.error) errorMsg = errData.error;
+        } catch {
+          /* ignore parse failure */
+        }
+        toast.error(errorMsg);
+        setMessages((prev) => prev.slice(0, -1));
+        return;
       }
 
       const reader = response.body.getReader();
@@ -106,6 +120,21 @@ export function Chat() {
             });
           }
         }
+      }
+
+      // If stream ended without a done:true signal, mark as interrupted
+      if (!done) {
+        setMessages((prev) => {
+          const next = [...prev];
+          const last = next[next.length - 1];
+          if (last?.role === "assistant") {
+            next[next.length - 1] = {
+              ...last,
+              content: last.content + " [response interrupted]",
+            };
+          }
+          return next;
+        });
       }
 
       // Persist the exchange to the database

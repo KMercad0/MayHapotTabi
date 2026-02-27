@@ -24,7 +24,8 @@ const router = Router();
 function handleUpload(req: Request, res: Response, next: NextFunction): void {
   upload.single("file")(req, res, (err: unknown) => {
     if (err) {
-      const message = err instanceof Error ? err.message : "Upload error";
+      let message = err instanceof Error ? err.message : "Upload error";
+      if (message === "File too large") message = "File size must be under 10MB";
       res.status(400).json({ error: message });
       return;
     }
@@ -56,7 +57,7 @@ router.post(
       });
 
     if (storageError) {
-      res.status(500).json({ error: "Failed to upload file to storage" });
+      res.status(500).json({ error: "File storage failed, try again" });
       return;
     }
 
@@ -76,12 +77,27 @@ router.post(
 
       if (dbError) throw new Error(`DB insert failed: ${dbError.message}`);
 
-      // 3. Extract text and split into chunks
+      // 3. Extract text and check for scanned PDF
       const text = await extractTextFromPdf(buffer);
+      if (text.trim().length < 50) {
+        await supabase.storage.from("uploads").remove([storagePath]);
+        res.status(400).json({
+          error:
+            "This PDF appears to be scanned or image-only. Text extraction is not supported yet.",
+        });
+        return;
+      }
+
       const chunks = chunkText(text);
 
       // 4. Generate embeddings and persist chunks
-      await storeChunks(chunks, documentId, userId, supabase);
+      try {
+        await storeChunks(chunks, documentId, userId, supabase);
+      } catch {
+        throw Object.assign(new Error("Embedding service unavailable, try again"), {
+          isEmbeddingError: true,
+        });
+      }
 
       res.status(201).json({
         documentId,
@@ -91,8 +107,13 @@ router.post(
     } catch (err) {
       // Rollback: remove the orphaned file from storage
       await supabase.storage.from("uploads").remove([storagePath]);
-      console.error("Upload pipeline error:", err);
-      res.status(500).json({ error: "Failed to process document" });
+      const isEmbedding = (err as { isEmbeddingError?: boolean }).isEmbeddingError;
+      if (isEmbedding) {
+        res.status(500).json({ error: "Embedding service unavailable, try again" });
+      } else {
+        console.error("Upload pipeline error:", err);
+        res.status(500).json({ error: "Failed to process document" });
+      }
     }
   }
 );

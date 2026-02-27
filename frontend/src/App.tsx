@@ -36,6 +36,7 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/chat/:docId" element={<Chat />} />
           </Route>
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AppShell>
     </BrowserRouter>

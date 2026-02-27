@@ -53,8 +53,12 @@ export function UploadZone({ onUploadSuccess }: UploadZoneProps) {
             await signOut();
             return;
           }
-          const data = err.response?.data as { error?: string } | undefined;
-          setError(data?.error ?? "Upload failed. Please try again.");
+          if (!err.response) {
+            setError("Connection failed. Check your internet.");
+          } else {
+            const data = err.response.data as { error?: string } | undefined;
+            setError(data?.error ?? "Upload failed. Please try again.");
+          }
         } else {
           setError("Upload failed. Please try again.");
         }
@@ -66,7 +70,9 @@ export function UploadZone({ onUploadSuccess }: UploadZoneProps) {
 
   const onDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (state !== "uploading") setState("dragging");
+    if (state === "uploading") return;
+    setState("dragging");
+    if (state === "error") setError("");
   };
 
   const onDragLeave = () => {

@@ -74,6 +74,7 @@ export function Dashboard() {
           documents={documents}
           loading={loading}
           error={fetchError}
+          onRetry={fetchDocuments}
         />
       </div>
     </div>

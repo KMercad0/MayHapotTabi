@@ -433,16 +433,16 @@ CMD ["node", "dist/index.js"]
 - [x] End-to-end test: upload PDF → ask question → get answer
 
 ### Phase 3 — Docker + Deploy (Week 3)
-- [ ] Dockerfile written and tested locally
-- [ ] docker-compose for local dev (backend + any local services)
-- [ ] Backend deployed to Railway
-- [ ] Frontend deployed to Vercel
-- [ ] GitHub Actions deploy workflow
-- [ ] End-to-end test on production URLs
+- [x] Dockerfile written and tested locally
+- [x] docker-compose for local dev (backend + any local services)
+- [x] Backend deployed to Railway
+- [x] Frontend deployed to Vercel
+- [x] GitHub Actions deploy workflow
+- [x] End-to-end test on production URLs
 
 ### Phase 4 — Polish (Week 4)
 - [ ] README with live demo URL + screenshots
-- [ ] Error handling (upload fails, API errors, auth errors)
+- [x] Error handling (upload fails, API errors, auth errors)
 - [ ] Loading states on all async actions
 - [ ] Mobile responsive
 - [ ] n8n automation (stretch goal)
