@@ -408,24 +408,26 @@ CMD ["node", "dist/index.js"]
 - [x] GitHub repo created
 - [x] Supabase project created
 - [x] Railway account created
-- [ ] Run database schema SQL in Supabase
-- [ ] Create Supabase Storage bucket named `uploads`
-- [ ] Add `.env` files (do not commit)
-- [ ] Add `.gitignore` (node_modules, .env, dist)
+- [x] Run database schema SQL in Supabase
+- [x] Create Supabase Storage bucket named `uploads`
+- [x] Add `.env` files (do not commit)
+- [x] Add `.gitignore` (node_modules, .env, dist)
 
 ### Phase 1 — Backend (Week 1)
-- [ ] Express + TypeScript scaffold
-- [ ] Auth middleware working
-- [ ] POST /upload — file stored in Supabase Storage
-- [ ] PDF extraction + chunking working
-- [ ] Embeddings generated and stored
-- [ ] POST /chat — vector search + Anthropic streaming working
-- [ ] Test with Postman/curl
+- [x] Express + TypeScript scaffold
+- [x] Auth middleware working
+- [x] POST /upload — file stored in Supabase Storage
+- [x] PDF extraction + chunking working
+- [x] Embeddings generated and stored
+- [x] POST /chat — vector search + Anthropic streaming working
+- [x] Test with Postman/curl
 
 ### Phase 2 — Frontend (Week 2)
-- [ ] React + Vite + TypeScript scaffold
-- [ ] Login/Signup pages
-- [ ] Dashboard with upload
+- [x] React + Vite + TypeScript scaffold
+- [x] Design system (Geist fonts, CSS variables, light/dark toggle)
+- [x] Routing (App.tsx with protected routes)
+- [x] Login/Signup pages
+- [x] Dashboard with upload
 - [ ] Chat page with streaming UI
 - [ ] Auth tokens sent to backend correctly
 - [ ] End-to-end test: upload PDF → ask question → get answer
